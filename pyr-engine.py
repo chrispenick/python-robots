@@ -40,6 +40,15 @@ class MMap(dict):
             for x in range(self.max_x):
                 st+="%s"%self[Coordinate(x,y)]
             print st
+
+    def __repr__(self):
+        res =""
+        for y in range(self.max_y):
+            st = ""
+            for x in range(self.max_x):
+                st+="%s"%self[Coordinate(x,y)]
+            res += st +"\n"
+        return res
     ###some work
     def GetFreeCoordinates(self):
         return Coordinate(0,0)
@@ -290,6 +299,10 @@ class Robot(object):
     def TurnRight(self):
         self.position.TurnRight()
 
+    def KillYouSelf(self):
+        self.live = 0
+        self.field.Leave()
+
     def Go (self, dist=1):
         """dist - distantion"""
         newcoord = self.coord.GetNext(self.position, dist)
@@ -315,6 +328,11 @@ class Robot(object):
         else:
             print "Miss :(("
             pass
+
+    def Order(self, order):
+        
+        ordd = order.split(' ')
+        
 
     def Json(self):
         return json.dumps(self, sort_keys=True, indent=4, cls=RobotEncoder)
