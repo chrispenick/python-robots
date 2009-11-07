@@ -30,8 +30,12 @@ class Game(object):
     def GiveInfo(self):
         for user in self.users:
             st = "%s"%self.mmap
-            st += self.robots[user].Json()
+            self.proc[user].communicate("EOM")
+            for user in self.robots[user]:
+                st += self.robots[user].Json()
             self.proc[user].communicate(st)
+            self.proc[user].communicate("EOR")
+
 
 
     def CheckAlive(self)

@@ -40,11 +40,8 @@ class MMap(dict):
                 st+="%s"%self[Coordinate(x,y)]
             res += st +"\n"
         return res
-    ###some work
-    def GetFreeCoordinates(self):
-        return Coordinate(0,0)
 
-    def LoadFile(self,filename):
+    def LoadStdin(self,filename):
         f = open(filename, 'r')
         y = 0
         self.max_x=0
@@ -127,26 +124,6 @@ class Field(object):
         else:
             return "%s" % self.abbv
 
-    def Set(self, robot):
-        """robot must be Robot object"""
-        self.robot = robot
-        self.isBusy = True
-
-
-    def Come(self, robot):
-        """robot must be Robot object"""
-        self.robot = robot
-        self.GetSpecialToRobotStandedOn(robot)
-        self.isBusy = True
-
-    def Leave(self):
-        self.robot = None
-        self.isBusy = False
-
-
-    def GetSpecialToRobotStandedOn(self, robot):
-        """Gets special ability of field to robot object"""
-        pass
 
     def isCrossable(self):
         if self.isBusy:
@@ -284,38 +261,30 @@ class Robot(object):
                 self.energy, self.ammo, self.position, self.coord)
         return res
 
-    def TurnLeft(self):
-        self.position.TurnLeft()
+    def Left(self):
+        print "Left"
 
-    def TurnRight(self):
-        self.position.TurnRight()
+    def Right(self):
+        print "Right"
 
-    def KillYouSelf(self):
-        Print 
+    def KillMe(self):
+        print "KillMe"
 
     def isWallAhead(self, dist=1)
         newcoord = self.coord.GetNext(self.position, dist)
         return self.__mmap[newcoord].isCrossable()
 
-    def Go (self, dist=1):
+    def Go (self):
         print "Go"
 
     def GetDistToRobot(self,robot):
         """Gets distantion to enemy robot, robot must be Robot type"""
         return self.coord.GetDistToCoordinate(robot.coord)
 
-    def isDirToRobot(self, robot):
-        """If direction to robot, then returns true"""
-        return True
 
     def FireToRobot(self, robot):
         """Fire to robot. Robot must be Robot type"""
-        if Fire(self.energy, self.GetDistToRobot(robot)) and self.isDirToRobot(robot):
-            print "Fire!!!!"
-            robot.live -= 1
-        else:
-            print "Miss :(("
-            pass
+        print "Fire %s" % robot.name
 
     def Json(self):
         return json.dumps(self, sort_keys=True, indent=4, cls=RobotEncoder)
@@ -386,45 +355,6 @@ if __name__=="__main__":
     PRINT()
     robot.TurnLeft()
     PRINT()
-    robot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.TurnLeft()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    enemyrobot.Go()
-    robot.FireToRobot(enemyrobot)
-    PRINT()
-    robot.TurnRight()
-    robot.Go()
-    robot.Go()
-    PRINT()
-    robot.TurnLeft()
-    robot.Go()
-    robot.Go()
-    robot.Go()
-    robot.Go()
     robot.Go()
     robot.Go()
     robot.Go()
