@@ -1,8 +1,7 @@
 #!/usr/bin/python
 
-"""Engine for PYR"""
+"""Python SDK for PYR"""
 
-import math, random
 import json
 
 WALL = "#"
@@ -14,14 +13,6 @@ WATER = "_"
 
 MAXCOORDS=1000
 
-FIREMAXDIST = 4.3
-ENERGYMAX = 100
-LIVEMAX = 100
-AMMOMAX = 100
-
-def Fire(energy, dist):
-    """Is robot with energy energy on distantion dist fired?"""
-    return (float(energy)/float(ENERGYMAX))*FIREMAXDIST >= random.uniform(FIREMAXDIST/2, FIREMAXDIST*2)
 
 
 
@@ -300,21 +291,14 @@ class Robot(object):
         self.position.TurnRight()
 
     def KillYouSelf(self):
-        self.live = 0
-        self.field.Leave()
+        Print 
 
     def isWallAhead(self, dist=1)
         newcoord = self.coord.GetNext(self.position, dist)
         return self.__mmap[newcoord].isCrossable()
 
     def Go (self, dist=1):
-        """dist - distantion"""
-        newcoord = self.coord.GetNext(self.position, dist)
-        if self.__mmap[newcoord].isCrossable():
-            self.coord = newcoord
-            self.field.Leave()
-            self.field = self.__mmap[self.coord]
-            self.field.Come(self)
+        print "Go"
 
     def GetDistToRobot(self,robot):
         """Gets distantion to enemy robot, robot must be Robot type"""
@@ -360,6 +344,25 @@ class RobotDecoder(json.JSONDecoder):
                       coord=Coordinate(my_class_dict['coord'][0],my_class_dict['coord'][1]),\
                       position=Position(my_class_dict['position']))
 
+
+
+class Pobot(Robot):
+    """Main Sdk class"""
+    def init(self):
+        self.reloading(True)
+        self.start()
+    def reloading(self, newsession=False):
+        self.mmap = MMap()
+        self.mmap.LoadStdin()
+        self.robots = []
+        ##loading of all robots, determ where i m
+
+    def turn(self):
+        pass
+    def start(self):
+        pass
+
+
 if __name__=="__main__":
     def PRINT():
         mmap.Print()
@@ -367,31 +370,8 @@ if __name__=="__main__":
         print robot
         print enemyrobot
 
-    """pos = Position(">")
-    pos.TurnLeft()
-    print pos
-    pos.TurnLeft()
-    print pos
-    pos.TurnLeft()
-    print pos
-    pos.TurnLeft()
-    print pos
-    pos.TurnLeft()
-    print pos
-    print "another"
-
-    pos.TurnRight()
-    print pos
-    pos.TurnRight()
-    print pos
-    pos.TurnRight()
-    print pos
-    pos.TurnRight()
-    print pos
-    pos.TurnRight()
-    print pos"""
     mmap = MMap()
-    mmap.LoadFile('testmap')
+    mmap.LoadStdin()
     #print mmap
     mmap.Print()
     robot = Robot(coord=Coordinate(4,4),mmap=mmap,field=mmap[Coordinate(4,4)],
