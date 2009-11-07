@@ -303,7 +303,7 @@ class Robot(object):
         self.live = 0
         self.field.Leave()
 
-    def isWallAhead(self, dist=1)
+    def isWallAhead(self, dist=1):
         newcoord = self.coord.GetNext(self.position, dist)
         return self.__mmap[newcoord].isCrossable()
 

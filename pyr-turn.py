@@ -29,6 +29,8 @@ class Game(object):
 
     def GiveInfo(self):
         for user in self.users:
+            self.proc[user].communicate(user)
+            self.proc[user].communicate("EON")
             st = "%s"%self.mmap
             self.proc[user].communicate("EOM")
             for user in self.robots[user]:
