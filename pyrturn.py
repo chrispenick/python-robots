@@ -163,7 +163,7 @@ class Game(object):
         self.StartRobots()
         self.GiveInfo()
         global Turn
-        Turn = 1
+        Turn = -1
 
 
     def turn(self):
