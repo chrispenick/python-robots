@@ -1,46 +1,64 @@
 #!/usr/bin/python
 """Turn. with --start starts new game, with --cont continie"""
-import subprocess
+import subprocess, sys
 
-import "pyr-engine"
+import pyrengine
 
 def Exit(st):
     print st
     exit()
 
 
+def ExitUsage():
+    print "Incorrect arguments! Correct usage:\n  \
+    ./pyrturn.py stdio /name/of/mapfile user1:/path/to/user1/programm user2:/path/to/user2/programm"
+
+
 class Game(object):
-    def __init__(mapfilename, users):
-        self.mmap=pyr-engine.MMap.LoadFile(mapfilename)
+    def __init__(self, mapfilename, users):
+        self.mmap = pyrengine.MMap()
+        self.mmap.LoadFile(mapfilename)
         self.users=users
         self.proc={}
+        self.robots = {}
         for user in self.users:
             freecoord = self.mmap.GetFreeCoordinate()
-            self.robots[user] = pyr-engine.Robot(freecoord,\
+            self.robots[user] = pyrengine.Robot(freecoord,\
                     self.mmap, self.mmap[freecoord], user)
 
 
 
     def StartRobots(self):
         for user in self.users:
-            prog = self.users[user]["prog_filename"]
+            prog = self.users[user]
             self.proc[user] = subprocess.Popen(prog, stdin=subprocess.PIPE,\
                         stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            if METHOD=="screen":
+                print "Started %s 's programm '%s', it say us'%s'" % (user, self.users[user],\
+                        self.proc[user].communicate())
 
     def GiveInfo(self):
         for user in self.users:
-            self.proc[user].communicate(user)
-            self.proc[user].communicate("EON")
-            st = "%s"%self.mmap
-            self.proc[user].communicate("EOM")
-            for user in self.robots[user]:
-                st += self.robots[user].Json()
-            self.proc[user].communicate(st)
-            self.proc[user].communicate("EOR")
+
+            sendstring = ""
+            sendstring += user
+            sendstring += "\nEON\n"
+            sendstring += "%s"%repr(self.mmap)
+            sendstring += "EOM\n"
+            for user in self.robots:
+                sendstring += self.robots[user].Json()+'\n'
+            sendstring += "\nEOR"
+
+            if METHOD=="screen":
+                print sendstring
+            self.proc[user].communicate(sendstring)
+            
+            if METHOD=="screen":
+                print "Sended to %s 's programm '%s'" % (user, self.users[user])
 
 
-
-    def CheckAlive(self)
+    def CheckAlive(self):
         for user in self.users:
             if self.robots[user].live<=0:
                 self.proc[user].terminate()
@@ -52,7 +70,7 @@ class Game(object):
                 winners += self.robot[user].name+" "
             Exit("Winner: "+winners)
 
-    def ParseOrders()
+    def ParseOrders():
        for user in self.users:
             order = self.proc[user].communicate(st)
             self.__order(user, order)
@@ -89,7 +107,19 @@ class Game(object):
 
 
 if __name__ == "__main__":
-    game = Game()
-    game.start()
-    while True:
-        game.turn()
+    args = sys.argv
+    if len (args) > 3:
+        global METHOD
+        METHOD = args[1]
+        mapfilename = args[2]
+        argsuser = args[3:]
+        users = {} 
+        for st in argsuser:
+            splited = st.split(':')
+            users[splited[0]]=splited[1]
+        game = Game(mapfilename, users)
+        game.start()
+        while True:
+            game.turn()
+    else:
+        ExitUsage()

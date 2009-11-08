@@ -41,16 +41,16 @@ class MMap(dict):
                 st+="%s"%self[Coordinate(x,y)]
             print st
 
-    def __repr__(self):
+    def __repr__(self, drawrobots=False):
         res =""
         for y in range(self.max_y):
             st = ""
             for x in range(self.max_x):
-                st+="%s"%self[Coordinate(x,y)]
+                st+="%s"%repr(self[Coordinate(x,y)])
             res += st +"\n"
         return res
     ###some work
-    def GetFreeCoordinates(self):
+    def GetFreeCoordinate(self):
         return Coordinate(0,0)
 
     def LoadFile(self,filename):
@@ -131,7 +131,8 @@ class Field(object):
         self.isBusy = False
 
     def __repr__(self):
-        if self.isBusy:
+        drawrobots = False
+        if self.isBusy and drawrobots:
             return "%s" % self.robot.position
         else:
             return "%s" % self.abbv
