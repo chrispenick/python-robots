@@ -1,9 +1,8 @@
 #!/usr/bin/python
 """Turn. with --start starts new game, with --cont continie"""
 import sys
-
+import subprocess
 import pyrengine
-import asubproc
 
 def Exit(st):
     print st
@@ -13,6 +12,7 @@ def Exit(st):
 def ExitUsage():
     print "Incorrect arguments! Correct usage:\n  \
     ./pyrturn.py stdio /name/of/mapfile user1:/path/to/user1/programm user2:/path/to/user2/programm"
+
 
 
 class Game(object):
@@ -32,31 +32,38 @@ class Game(object):
     def StartRobots(self):
         for user in self.users:
             prog = self.users[user]
-            self.proc[user] = asubproc.Popen(prog, stdin=asubproc.PIPE,\
-                        stdout=asubproc.PIPE)
-            
+            self.proc[user] = subprocess.Popen(prog, stdin=subprocess.PIPE,\
+                        stdout=subprocess.PIPE)
+            programsay = self.proc[user].stdout.readline()
+            if not (programsay == "CONNECT\n"):
+                Exit("Bad game-programm start!")
             if METHOD=="screen":
                 pass
-                #print "Started %s 's programm '%s', it say us'%s'" % (user, self.users[user],\
-                #        self.proc[user].recv())
+
+                print "Started %s 's programm '%s', it say us '%s' " % (user, self.users[user],\
+                        programsay)
                 #self.proc[user].wait()
 
+
+##BAD fat BUG!!!!!!!!!!
+
     def GiveInfo(self):
+        print self.users
         for user in self.users:
+
 
             sendstring = ""
             sendstring += user
             sendstring += "\nEON\n"
             sendstring += "%s"%repr(self.mmap)
             sendstring += "EOM\n"
-            for user in self.robots:
-                sendstring += self.robots[user].Json()+'\n'
+            for robotname in self.robots:
+                sendstring += self.robots[robotname].Json()+'\n'
             sendstring += "EOR\n"
 
             if METHOD=="screen":
                 print sendstring
-            self.proc[user].send(sendstring)
-            
+            self.proc[user].stdin.write(sendstring)
             if METHOD=="screen":
                 print "Sended to %s 's programm '%s'" % (user, self.users[user])
 
@@ -74,8 +81,9 @@ class Game(object):
             Exit("Winner: "+winners)
 
     def ParseOrders(self):
-       for user in self.users:
-            order = self.proc[user].recv()
+
+        for user in self.users:
+            order = self.proc[user].stdout.readline().strip('\n')
             print "##################-%s-##########################"%order
             self.__order(user, order)
 
@@ -91,8 +99,11 @@ class Game(object):
 
 
     def __order(self, user, stringorder):
-        print "-----"+stringorder
-        st, arg = stringorder.split(' ')
+        print "--string order---"+stringorder
+        try:
+            st, arg = stringorder.split(' ')
+        except ValueError:
+            st = stringorder
         rob = self.robots[user]
         if st=="Left":
             rob.TurnLeft()

@@ -24,6 +24,9 @@ def ReadUntil(untilstr):
             line = sys.stdin.readline()
         return name
 
+def WriteLn(st):
+        sys.stdout.write("%s\n"%st)
+        sys.stdout.flush()
 
 class MMap(dict):
     def __getitem__(self, key):
@@ -261,6 +264,7 @@ class Robot(object):
         self.live = live
         self.ammo = ammo
         self.position = position
+        self.isIam = False
 
     def __repr__(self):
         res = "Robot \"%s\" L:%d E:%d A:%d P:|%s| cord:%s" % (self.name, self.live, \
@@ -268,32 +272,33 @@ class Robot(object):
         return res
 
     def Left(self):
-        print "Left"
+        WriteLn("Left")
+
 
     def Right(self):
-        print "Right"
+        WriteLn("Right")
 
     def Idle(self):
-        sys.stdout.write("Idle\n")
+        WriteLn("Idle")
 
     def KillMe(self):
-        print "KillMe"
+        WriteLn("KillMe")
+
+    def Go (self):
+        Writeln("Go")
+
+    def FireToRobot(self, robot):
+        """Fire to robot. Robot must be Robot type"""
+        WriteLn("Fire %s" % robot.name)
 
     def isWallAhead(self, dist=1):
         newcoord = self.coord.GetNext(self.position, dist)
         return self.mmap[newcoord].isCrossable()
 
-    def Go (self):
-        print "Go"
-
     def GetDistToRobot(self,robot):
         """Gets distantion to enemy robot, robot must be Robot type"""
         return self.coord.GetDistToCoordinate(robot.coord)
 
-
-    def FireToRobot(self, robot):
-        """Fire to robot. Robot must be Robot type"""
-        print "Fire %s" % robot.name
 
     def Json(self):
         return json.dumps(self, sort_keys=True, indent=4, cls=RobotEncoder)
@@ -328,8 +333,13 @@ class Pobot(Robot):
     """Main Sdk class"""
 
     def __init__(self):
-        self.reloading(True)
+        self.myoldusername=""
+        self.turnnumber = 1
         self.start()
+
+        WriteLn("CONNECT")
+        self.reloading(True)
+
 
     def __repr__(self):
         return "My name '%s', myself:|%s| \n -- map -- \n%s\n%dX%d\n =robots=\n%s" %\
@@ -338,8 +348,9 @@ class Pobot(Robot):
 
 
     def reloading(self, newsession=False):
-        sys.stdout.write("EOO\n")
         self.name = ReadUntil('EON').strip('\n')
+        if self.myoldusername=="":
+            self.myoldusername=self.name
         self.mmap = MMap()
         self.mmap.LoadStdin()
         self.robots = []
@@ -356,6 +367,7 @@ class Pobot(Robot):
 
         for robot in self.robots:
             if robot.name==self.name:
+                robot.isIam = True
                 myself = robot
         self.live = myself.live
         self.energy = myself.energy
@@ -369,6 +381,9 @@ class Pobot(Robot):
 
     def main(self):
         self.Idle()
+        sys.stderr.write("----------------Turn #%d, my name is %s--------"%(self.turnnumber, self.name))
+        sys.stderr.write("----------------%s, my name is %s--------"%(self.myoldusername, self.name))
+        self.turnnumber += 10
         self.reloading()
     def start(self):
         pass
