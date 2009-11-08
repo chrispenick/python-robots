@@ -1,8 +1,9 @@
 #!/usr/bin/python
 """Turn. with --start starts new game, with --cont continie"""
-import subprocess, sys
+import sys
 
 import pyrengine
+import asubproc
 
 def Exit(st):
     print st
@@ -31,12 +32,14 @@ class Game(object):
     def StartRobots(self):
         for user in self.users:
             prog = self.users[user]
-            self.proc[user] = subprocess.Popen(prog, stdin=subprocess.PIPE,\
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            self.proc[user] = asubproc.Popen(prog, stdin=asubproc.PIPE,\
+                        stdout=asubproc.PIPE)
             
             if METHOD=="screen":
-                print "Started %s 's programm '%s', it say us'%s'" % (user, self.users[user],\
-                        self.proc[user].communicate())
+                pass
+                #print "Started %s 's programm '%s', it say us'%s'" % (user, self.users[user],\
+                #        self.proc[user].recv())
+                #self.proc[user].wait()
 
     def GiveInfo(self):
         for user in self.users:
@@ -48,11 +51,11 @@ class Game(object):
             sendstring += "EOM\n"
             for user in self.robots:
                 sendstring += self.robots[user].Json()+'\n'
-            sendstring += "\nEOR"
+            sendstring += "EOR\n"
 
             if METHOD=="screen":
                 print sendstring
-            self.proc[user].communicate(sendstring)
+            self.proc[user].send(sendstring)
             
             if METHOD=="screen":
                 print "Sended to %s 's programm '%s'" % (user, self.users[user])
@@ -70,9 +73,10 @@ class Game(object):
                 winners += self.robot[user].name+" "
             Exit("Winner: "+winners)
 
-    def ParseOrders():
+    def ParseOrders(self):
        for user in self.users:
-            order = self.proc[user].communicate(st)
+            order = self.proc[user].recv()
+            print "##################-%s-##########################"%order
             self.__order(user, order)
 
     def start(self):
@@ -87,7 +91,8 @@ class Game(object):
 
 
     def __order(self, user, stringorder):
-        (st, arg) = stringorder.split(' ')
+        print "-----"+stringorder
+        st, arg = stringorder.split(' ')
         rob = self.robots[user]
         if st=="Left":
             rob.TurnLeft()

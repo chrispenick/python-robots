@@ -274,7 +274,7 @@ class Robot(object):
         print "Right"
 
     def Idle(self):
-        print "Idle"
+        sys.stdout.write("Idle\n")
 
     def KillMe(self):
         print "KillMe"
@@ -338,7 +338,7 @@ class Pobot(Robot):
 
 
     def reloading(self, newsession=False):
-        print "EOO"
+        sys.stdout.write("EOO\n")
         self.name = ReadUntil('EON').strip('\n')
         self.mmap = MMap()
         self.mmap.LoadStdin()
@@ -348,6 +348,7 @@ class Pobot(Robot):
         for st in robostrings:
             if len(st)<5:
                 robostrings.remove(st)
+        #sys.stderr.write("%s"%robostrings)
         for st in robostrings:
             #print "!!!!!!"+st+"!!!!!!"
             self.robots.append( json.loads("{"+st+"}", cls=RobotDecoder, mmap=self.mmap))
