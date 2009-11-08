@@ -1,0 +1,313 @@
+<game>
+  <date>2009-11-08 17:03:57.830565</date>
+  <players>
+    <player>
+      <name>HabraUser</name>
+      <robots>
+        <robot>HabraUser</robot>
+      </robots>
+      <time>0</time>
+    </player>
+    <player>
+      <name>Tormozz2</name>
+      <robots>
+        <robot>Tormozz2</robot>
+      </robots>
+      <time>0</time>
+    </player>
+    <player>
+      <name>TormoZZ</name>
+      <robots>
+        <robot>TormoZZ</robot>
+      </robots>
+      <time>0</time>
+    </player>
+    <player>
+      <name>HabraUserillo</name>
+      <robots>
+        <robot>HabraUserillo</robot>
+      </robots>
+      <time>0</time>
+    </player>
+    <player>
+      <name>Darvin</name>
+      <robots>
+        <robot>Darvin</robot>
+      </robots>
+      <time>0</time>
+    </player>
+  </players>
+  <log>
+    <turn>
+      <number>2</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>449</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>HabraUserillo</name>
+          <position>North</position>
+          <energy>449</energy>
+          <ammo>69</ammo>
+          <live>1</live>
+          <order>Fire HabraUser</order>
+          <coord>
+            <x>3</x>
+            <y>9</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>449</energy>
+          <ammo>69</ammo>
+          <live>1</live>
+          <order>Fire HabraUser</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <turn>
+      <number>3</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>448</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>HabraUserillo</name>
+          <position>North</position>
+          <energy>448</energy>
+          <ammo>69</ammo>
+          <live>1</live>
+          <order>Fire Tormozz2</order>
+          <coord>
+            <x>3</x>
+            <y>9</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>448</energy>
+          <ammo>69</ammo>
+          <live>1</live>
+          <order>Fire Tormozz2</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <turn>
+      <number>4</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>447</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>HabraUserillo</name>
+          <position>North</position>
+          <energy>447</energy>
+          <ammo>68</ammo>
+          <live>1</live>
+          <order>Fire TormoZZ</order>
+          <coord>
+            <x>3</x>
+            <y>9</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>447</energy>
+          <ammo>68</ammo>
+          <live>1</live>
+          <order>Fire TormoZZ</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <turn>
+      <number>5</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>446</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>446</energy>
+          <ammo>67</ammo>
+          <live>1</live>
+          <order>Fire HabraUserillo</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <turn>
+      <number>6</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>445</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>445</energy>
+          <ammo>66</ammo>
+          <live>1</live>
+          <order>Fire TormoZZ</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <turn>
+      <number>7</number>
+      <map>#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+</map>
+      <robots>
+        <robot>
+          <name>TormoZZ</name>
+          <position>North</position>
+          <energy>444</energy>
+          <ammo>70</ammo>
+          <live>1</live>
+          <order>Idle</order>
+          <coord>
+            <x>4</x>
+            <y>2</y>
+          </coord>
+        </robot>
+        <robot>
+          <name>Darvin</name>
+          <position>North</position>
+          <energy>444</energy>
+          <ammo>66</ammo>
+          <live>1</live>
+          <order>Fire HabraUserillo</order>
+          <coord>
+            <x>17</x>
+            <y>7</y>
+          </coord>
+        </robot>
+      </robots>
+    </turn>
+    <winner>Darvin </winner>
+  </log>
+</game>

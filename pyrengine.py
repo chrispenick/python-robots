@@ -15,8 +15,8 @@ WATER = "_"
 MAXCOORDS=1000
 
 FIREMAXDIST = 4.3
-ENERGYMAX = 20
-LIVEMAX = 60
+ENERGYMAX = 450
+LIVEMAX = 1
 AMMOMAX = 70
 
 def Fire(energy, dist):
@@ -30,7 +30,7 @@ def Fire(energy, dist):
 
 class MMap(dict):
     def __getitem__(self, key):
-        if not self.has_key(key):
+        if not key in self:
             return FieldWall(Coordinate(-1,-1),self)
         else:
             return super(MMap, self).__getitem__(key)
@@ -263,29 +263,36 @@ class Position(object):
             return False
 
     def TurnLeft(self):
-        if self.__pos==self._PosDict["East"]:
-            self.__pos = self._PosDict["North"]
-        elif self.__pos==self._PosDict["North"]:
-            self.__pos = self._PosDict["West"]
-        elif self.__pos==self._PosDict["West"]:
-            self.__pos = self._PosDict["South"]
-        elif self.__pos==self._PosDict["South"]:
-            self.__pos = self._PosDict["East"]
+        #if self.__pos==self._PosDict["East"]:
+        #    self.__pos = self._PosDict["North"]
+        #elif self.__pos==self._PosDict["North"]:
+        #    self.__pos = self._PosDict["West"]
+        #elif self.__pos==self._PosDict["West"]:
+        #    self.__pos = self._PosDict["South"]
+        #elif self.__pos==self._PosDict["South"]:
+        #    self.__pos = self._PosDict["East"]
+        turnmap = {self.EAST: self.NORTH, self.NORTH: self.WEST, \
+                    self.WEST: self.SOUTH, self.SOUTH: self.EAST}
+        self.__pos = turnmap[self.__pos]
+
 
     def TurnRight(self):
-        if self.__pos==self._PosDict["East"]:
-            self.__pos = self._PosDict["South"]
-        elif self.__pos==self._PosDict["North"]:
-            self.__pos = self._PosDict["East"]
-        elif self.__pos==self._PosDict["West"]:
-            self.__pos = self._PosDict["North"]
-        elif self.__pos==self._PosDict["South"]:
-            self.__pos = self._PosDict["West"]
+        #if self.__pos==self._PosDict["East"]:
+        #    self.__pos = self._PosDict["South"]
+        #elif self.__pos==self._PosDict["North"]:
+        #    self.__pos = self._PosDict["East"]
+        #elif self.__pos==self._PosDict["West"]:
+        #    self.__pos = self._PosDict["North"]
+        #elif self.__pos==self._PosDict["South"]:
+        #    self.__pos = self._PosDict["West"]
+        turnmap = {self.EAST: self.SOUTH, self.NORTH: self.EAST, \
+                    self.WEST: self.NORTH, self.SOUTH: self.WEST}
+        self.__pos = turnmap[self.__pos]
 
 
 class Robot(object):
 
-    def __init__(self, coord, mmap, field, name, energy=ENERGYMAX, live=LIVEMAX, ammo=LIVEMAX \
+    def __init__(self, coord, mmap, field, name, energy=ENERGYMAX, live=LIVEMAX, ammo=AMMOMAX \
         , position=Position(Position.NORTH)):
         """Position must be position, coord must be Coordinate"""
         self.field = field
@@ -341,7 +348,8 @@ class Robot(object):
 
     def FireToRobot(self, robot):
         """Fire to robot. Robot must be Robot type"""
-        self.ammo-=1
+        if self.ammo > 0:
+            self.ammo-=1
         if Fire(self.energy, self.GetDistToRobot(robot)) and self.isDirToRobot(robot):
             #print "Fire!!!!"
             robot.live -= 1

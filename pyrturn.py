@@ -86,8 +86,8 @@ class Game(object):
 
 
     def StopRobots(self):
-        for user in self.users:
-            self.proc[user].terminate()
+        for robot in self.robots:
+            self.proc[robot].terminate()
 
     def StartRobots(self):
         for user in self.users:
@@ -108,45 +108,56 @@ class Game(object):
 ##BAD fat BUG!!!!!!!!!!
 
     def GiveInfo(self):
-        for user in self.users:
+        for robot in self.robots:
             sendstring = ""
-            sendstring += user
+            sendstring += robot
             sendstring += "\nEON\n"
             sendstring += "%s"%repr(self.mmap)
             sendstring += "EOM\n"
-            for robotname in self.robots:
-                sendstring += self.robots[robotname].Json()+'\n'
+            for robotnameinrobotslist in self.robots:
+                sendstring += self.robots[robotnameinrobotslist].Json()+'\n'
             sendstring += "EOR\n"
 
             if METHOD=="screen":
                 print sendstring
-            self.proc[user].stdin.write(sendstring)
+            self.proc[robot].stdin.write(sendstring)
             if METHOD=="screen":
-                print "Sended to %s 's programm '%s'" % (user, self.users[user])
+                print "Sended to %s 's programm '%s'" % (robot, self.users[robot])
 
 
     def CheckAlive(self):
-        for user in self.users:
-            if self.robots[user].live<=0:
-                self.proc[user].terminate()
-                self.robots[user].KillYouSelf()
-                del self.robots[user]
+        mustbedeleted = []
+        for robot in self.robots:
+            if self.robots[robot].live<=0:
+                self.proc[robot].terminate()
+                self.robots[robot].KillYouSelf()
+                self.proc[robot].wait()
+                mustbedeleted.append(robot)
+
+        for robot in mustbedeleted:
+                del self.proc[robot]
+                del self.robots[robot]
+        
         if len (self.robots)==1:
             winners =""
             for robot in self.robots:
                 winners += self.robots[robot].name+" "
+            if METHOD=="xml":
+                ET.SubElement(self.xml_log, "winner").text = winners
             Exit("Winner: "+winners)
         elif len(self.robots)==0:
+            if METHOD=="xml":
+                ET.SubElement(self.xml_log, "winner").text = "NOWINNERS"
             Exit("Winner: "+"NOBODY")
 
     def ParseOrders(self):
 
-        for user in self.users:
-            order = self.proc[user].stdout.readline().strip('\n')
-            self.robots[user].order=order
+        for robot in self.robots:
+            order = self.proc[robot].stdout.readline().strip('\n')
+            self.robots[robot].order=order
             if METHOD=="screen":
                 print "##################-%s-##########################"%order
-            self.__order(user, order)
+            self.__order(robot, order)
 
     def start(self):
         self.StartRobots()
@@ -176,7 +187,6 @@ class Game(object):
                 ET.SubElement(robot, "energy").text = "%d" % self.robots[rob].energy
                 ET.SubElement(robot, "ammo").text = "%d" % self.robots[rob].ammo
                 ET.SubElement(robot, "live").text = "%d" % self.robots[rob].live
-                ET.SubElement(robot, "energy").text = "%d" % self.robots[rob].energy
                 ET.SubElement(robot, "order").text = self.robots[rob].order
                 coord = ET.SubElement(robot, "coord")
                 ET.SubElement(coord, "x").text = "%d" % self.robots[rob].coord.x
@@ -184,6 +194,8 @@ class Game(object):
 
  
         if Turn>=MAXTURNS:
+            if METHOD=="xml":
+                ET.SubElement(self.xml_log, "winner").text = "TIMEOUT"
             Exit('Nobody wins, too many (%d) turns!'%Turn)
 
 
@@ -205,7 +217,10 @@ class Game(object):
         elif st=="KillMe":
             rob.KillYouSelf()
         elif st=="Fire":
-            rob.FireToRobot(self.robots[arg])
+            try:
+                rob.FireToRobot(self.robots[arg])
+            except KeyError:
+                pass
         else:
             Exit("Invalid command from roboprogramm!")
 
