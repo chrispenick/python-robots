@@ -167,9 +167,6 @@ class Game(object):
 
 
     def turn(self):
-        self.ParseOrders()
-        self.CheckAlive()
-        self.GiveInfo()
         global Turn
         Turn += 1
         if METHOD=="screen":
@@ -187,12 +184,20 @@ class Game(object):
                 ET.SubElement(robot, "energy").text = "%d" % self.robots[rob].energy
                 ET.SubElement(robot, "ammo").text = "%d" % self.robots[rob].ammo
                 ET.SubElement(robot, "live").text = "%d" % self.robots[rob].live
-                ET.SubElement(robot, "order").text = self.robots[rob].order
+                try:
+                    order = self.robots[rob].order
+                except AttributeError:
+                    order = "EMPTY"
+
+                ET.SubElement(robot, "order").text = order
                 coord = ET.SubElement(robot, "coord")
                 ET.SubElement(coord, "x").text = "%d" % self.robots[rob].coord.x
                 ET.SubElement(coord, "y").text = "%d" % self.robots[rob].coord.y
 
- 
+        self.ParseOrders()
+        self.CheckAlive()
+        self.GiveInfo()
+
         if Turn>=MAXTURNS:
             if METHOD=="xml":
                 ET.SubElement(self.xml_log, "winner").text = "TIMEOUT"
