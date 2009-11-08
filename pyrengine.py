@@ -15,9 +15,9 @@ WATER = "_"
 MAXCOORDS=1000
 
 FIREMAXDIST = 4.3
-ENERGYMAX = 100
-LIVEMAX = 100
-AMMOMAX = 100
+ENERGYMAX = 20
+LIVEMAX = 60
+AMMOMAX = 70
 
 def Fire(energy, dist):
     """Is robot with energy energy on distantion dist fired?"""
@@ -51,7 +51,11 @@ class MMap(dict):
         return res
     ###some work
     def GetFreeCoordinate(self):
-        return Coordinate(0,0)
+        while True:
+            coord = Coordinate(random.randint(0, self.max_x), random.randint(0, self.max_y))
+            if self[coord].isCrossable:
+                break
+        return coord
 
     def LoadFile(self,filename):
         f = open(filename, 'r')
@@ -229,6 +233,11 @@ class Position(object):
     def __repr__(self):
         return self.__pos
 
+    def asName(self):
+        for name in self._PosDict:
+            if self._PosDict[name]==self.__pos:
+                return name
+
     def isNorth(self):
         if self.__pos == self._PosDict["North"]:
             return True
@@ -308,6 +317,11 @@ class Robot(object):
         newcoord = self.coord.GetNext(self.position, dist)
         return self.__mmap[newcoord].isCrossable()
 
+    def Turn(self):
+        if self.energy>0:
+            self.energy -= 1
+
+
     def Go (self, dist=1):
         """dist - distantion"""
         newcoord = self.coord.GetNext(self.position, dist)
@@ -327,11 +341,12 @@ class Robot(object):
 
     def FireToRobot(self, robot):
         """Fire to robot. Robot must be Robot type"""
+        self.ammo-=1
         if Fire(self.energy, self.GetDistToRobot(robot)) and self.isDirToRobot(robot):
-            print "Fire!!!!"
+            #print "Fire!!!!"
             robot.live -= 1
         else:
-            print "Miss :(("
+            #print "Miss :(("
             pass
 
     def Json(self):

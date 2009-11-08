@@ -8,12 +8,12 @@ class DumbBoot(pyrsdk.Pobot):
         """Main cyclic function: :))"""
         fired = False
         for enemyrobot in self.robots:
-            if self.GetDistToRobot(enemyrobot)<4 and not enemyrobot.isIam:
+            if self.GetDistToRobot(enemyrobot)<20 and not enemyrobot.isIam and self.ammo>0:
                 self.FireToRobot(enemyrobot)
                 fired=True
         if not fired:
-            if self.energy<50:
-                self.KillYouSelf()
+            if self.energy<0:
+                self.KillMe()
             if not self.isWallAhead():
                 self.Go()
             else:

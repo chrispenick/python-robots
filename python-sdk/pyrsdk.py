@@ -15,7 +15,6 @@ MAXCOORDS=1000
 
 
 
-
 def ReadUntil(untilstr):
         line = ""
         name = ""
@@ -24,9 +23,6 @@ def ReadUntil(untilstr):
             line = sys.stdin.readline()
         return name
 
-def WriteLn(st):
-        sys.stdout.write("%s\n"%st)
-        sys.stdout.flush()
 
 class MMap(dict):
     def __getitem__(self, key):
@@ -271,29 +267,33 @@ class Robot(object):
                 self.energy, self.ammo, self.position, self.coord)
         return res
 
+    def WriteLn(self, st):
+        sys.stdout.write("%s\n"%st)
+        sys.stdout.flush()
+
     def Left(self):
-        WriteLn("Left")
+        self.WriteLn("Left")
 
 
     def Right(self):
-        WriteLn("Right")
+        self.WriteLn("Right")
 
     def Idle(self):
-        WriteLn("Idle")
+        self.WriteLn("Idle")
 
     def KillMe(self):
-        WriteLn("KillMe")
+        self.WriteLn("KillMe")
 
     def Go (self):
-        Writeln("Go")
+        self.WriteLn("Go")
 
     def FireToRobot(self, robot):
         """Fire to robot. Robot must be Robot type"""
-        WriteLn("Fire %s" % robot.name)
+        self.WriteLn("Fire %s" % robot.name)
 
     def isWallAhead(self, dist=1):
         newcoord = self.coord.GetNext(self.position, dist)
-        return self.mmap[newcoord].isCrossable()
+        return not self.mmap[newcoord].isCrossable()
 
     def GetDistToRobot(self,robot):
         """Gets distantion to enemy robot, robot must be Robot type"""
@@ -332,12 +332,14 @@ class RobotDecoder(json.JSONDecoder):
 class Pobot(Robot):
     """Main Sdk class"""
 
+
+
     def __init__(self):
         self.myoldusername=""
         self.turnnumber = 1
         self.start()
 
-        WriteLn("CONNECT")
+        self.WriteLn("CONNECT")
         self.reloading(True)
 
 
@@ -381,9 +383,7 @@ class Pobot(Robot):
 
     def main(self):
         self.Idle()
-        sys.stderr.write("----------------Turn #%d, my name is %s--------"%(self.turnnumber, self.name))
-        sys.stderr.write("----------------%s, my name is %s--------"%(self.myoldusername, self.name))
-        self.turnnumber += 10
+        self.turnnumber += 1
         self.reloading()
     def start(self):
         pass
