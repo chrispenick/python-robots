@@ -63,22 +63,21 @@ class MMap(dict):
         self.max_x=0
         for line in f:
             x = 0
+
+            ls = line.strip('\n')
+            self.max_x = max(self.max_x, len(ls))
             for symbol in line.strip('\n'):
-                if x> self.max_x:
-                    self.max_x = x+1
                 coord = Coordinate(x,y)
-                if symbol == GROUND:
-                    self[coord]=FieldGround(coord, self)
-                elif symbol == WALL:
-                    self[coord]=FieldWall(coord, self)
-                elif symbol == WATER:
-                    self[coord]=FieldWater(coord, self)
-                elif symbol == FOREST:
-                    self[coord]=FieldForest(coord, self)
-                elif symbol == ENERGY:
-                    self[coord]=FieldEnergy(coord, self)
-                elif symbol == AMMO:
-                    self[coord]=FieldAmmo(coord, self)
+
+                symbol_to_field_dict ={
+                    GROUND: FieldGround,
+                    WALL: FieldWall,
+                    WATER: FieldWater,
+                    FOREST: FieldForest,
+                    ENERGY: FieldEnergy,
+                    AMMO: FieldAmmo,
+                }
+                self[coord]=symbol_to_field_dict[symbol](coord, self) 
                 x += 1
             y += 1
         self.max_y = y
@@ -263,28 +262,12 @@ class Position(object):
             return False
 
     def TurnLeft(self):
-        #if self.__pos==self._PosDict["East"]:
-        #    self.__pos = self._PosDict["North"]
-        #elif self.__pos==self._PosDict["North"]:
-        #    self.__pos = self._PosDict["West"]
-        #elif self.__pos==self._PosDict["West"]:
-        #    self.__pos = self._PosDict["South"]
-        #elif self.__pos==self._PosDict["South"]:
-        #    self.__pos = self._PosDict["East"]
         turnmap = {self.EAST: self.NORTH, self.NORTH: self.WEST, \
                     self.WEST: self.SOUTH, self.SOUTH: self.EAST}
         self.__pos = turnmap[self.__pos]
 
 
     def TurnRight(self):
-        #if self.__pos==self._PosDict["East"]:
-        #    self.__pos = self._PosDict["South"]
-        #elif self.__pos==self._PosDict["North"]:
-        #    self.__pos = self._PosDict["East"]
-        #elif self.__pos==self._PosDict["West"]:
-        #    self.__pos = self._PosDict["North"]
-        #elif self.__pos==self._PosDict["South"]:
-        #    self.__pos = self._PosDict["West"]
         turnmap = {self.EAST: self.SOUTH, self.NORTH: self.EAST, \
                     self.WEST: self.NORTH, self.SOUTH: self.WEST}
         self.__pos = turnmap[self.__pos]

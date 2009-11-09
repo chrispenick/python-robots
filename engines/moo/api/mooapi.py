@@ -58,24 +58,21 @@ class MooPlayer(object):
 
 
     ##some functions
+
     def is_right_secret(self, secret):
         """check all digits are different"""
-        dct = {}
+        dct = []
         for digit in secret:
-            try:
-                if dct[digit]:
-                    return False
-            except KeyError:
-                dct[digit] = True
+            if digit in dct:
+                return 0
+            else:
+                dct.append(digit)
         return True
-
 
     def generate_number(self, number):
         """generate number-counted secret"""
         while True:
-            result = ""
-            for i in range(number):
-                result += "%d" % random.randint(0,9)
+            result = ''.join([ str(random.randint(0,9)) for x in range(number) ]) 
             if self.is_right_secret(result):
                 return result
 
