@@ -2,7 +2,12 @@
 """Turn. with --start starts new game, with --cont continie"""
 import sys,datetime
 import subprocess
-import pyrengine
+
+sys.path.append('../')
+
+#import engines.engine as engine
+
+import engines.noobwars.noobinternal as pyrengine
 
 MAXTURNS = 450
 
