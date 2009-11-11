@@ -2,7 +2,9 @@
 import random
 import time, sys
 
-import engine
+sys.path.append('../')
+
+import engines.engine as engine
 
 MESS_NUMBER_DIGITS = "number_digits" #start message
 MESS_GUESS = "guess!"
