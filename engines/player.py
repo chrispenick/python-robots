@@ -62,10 +62,16 @@ class PlayerMultiLang(Player):
         "ruby":"/usr/bin/ruby",
 
         }
+        #many work
     COMPILED = {
         "cpp" : "/usr/bin/gcc",
         }
     def __init__(self, name, progname, progtype):
+        """
+        name - player name
+        progname - where on this machine programm source file
+        progtype - name of programming language
+        """
         self.progargs = ""
         self.name = name
         if progtype in self.INTERPRETED:
@@ -78,7 +84,10 @@ class PlayerMultiLang(Player):
             raise AssertionError
 
     def build(self, progname):
-        ##many work; temp files
+        """
+        builds progname and returns name of executable
+        """
+        ##many work
         compiled_progname=progname
 
         return compiled_progname
@@ -91,11 +100,25 @@ class PlayerMultiLangSSH(PlayerMultiLang):
     This class runs many languages programm by ssh
     """
     SSH_EXEC_PATH="/usr/bin/ssh"
+    SCP_EXEC_PATH="/usr/bin/scp"
+    TMP_FILENAME="/tmp/programm"
     def __init__(self, name, progname, progtype, ssh_server, ssh_user):
-        ###super
+        """
+        name - player name
+        progname - where on this machine programm source file
+        progtype - name of programming language
+        ssh server - server to start on
+        ssh user - user to start on
+        """
         self.ssh_user, self.ssh_server = ssh_user, ssh_server
+        os.system("%s %s %s@%s:%s" % (SCP_EXEC_PATH, progname, ssh_user, ssh_server, TMP_FILENAME) )
+        progname = TMP_FILENAME
+        super(PlayerMultiLangSSH, self).__init__(name, progname, progtype)
     
     def run_programm(self, progname, progargs):
+        """
+        runs programm on own server
+        """
         prog = "%s %s" % (progname, progargs)
         sshargs = '%s@%s "%s"' % (self.ssh_user, self.ssh_server, prog)
         return subprocess.Popen(executable=SSH_EXEC_PATH, args=sshargs, stdin=subprocess.PIPE,\
