@@ -63,8 +63,11 @@ class PlayerMultiLang(Player):
 
         }
         #many work
+
+    COMPILED_FILENAME="/tmp/programm"
     COMPILED = {
-        "cpp" : "/usr/bin/gcc",
+        "c" : ("/usr/bin/gcc", "-o"),
+        "cpp" : ("/usr/bin/g++", "-o"),
         }
     def __init__(self, name, progname, progtype):
         """
@@ -87,11 +90,11 @@ class PlayerMultiLang(Player):
         """
         builds progname and returns name of executable
         """
-        ##many work
-        compiled_progname=progname
+        self.run_programm(self.COMPILED[self.progtype][0], "%s %s %s" %\
+                    (progname, self.COMPILED[self.progtype][1], COMPILED_FILENAME ))
 
+        compiled_progname=COMPILED_FILENAME
         return compiled_progname
-
 
 
 

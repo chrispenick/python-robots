@@ -1,0 +1,4 @@
+// Hello World in Nemerle (a functional programming language for .NET)
+
+System.Console.WriteLine("Hello World");
+

@@ -1,0 +1,4 @@
+"Hello World in Smalltalk (simple version)"
+
+Transcript show: 'Hello World!'.
+
