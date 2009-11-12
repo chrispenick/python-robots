@@ -1,0 +1,109 @@
+#!/usr/bin/python
+"""
+This module realise programm-player start at local and net
+"""
+
+
+import subprocess,sys
+
+class Player(object):
+    """
+    Class to communicate with players-programs
+    """
+    def __init__(self, name, progname):
+        """
+        name - name of player
+        progname - path to programm
+        """
+        self.name = name
+        self.progname = progname
+        self.progargs = ""
+
+    def connect(self):
+        """
+        Starts player-programm instance
+        """
+        self.__proc = self.run_programm(self.progname, self.progargs)
+        
+        
+    def run_programm(self, progname, progargs):
+        return subprocess.Popen(executable=progname, args=progargs, stdin=subprocess.PIPE,\
+                        stdout=subprocess.PIPE)
+
+    def send(self, sendstring):
+        """
+        Sends line to program
+        """
+        self.__proc.stdin.write(sendstring+'\n')
+
+    def recieve(self):
+        """
+        Reads line from programm output, stripes \\n
+        """
+        return self.__proc.stdout.readline().strip('\n')
+
+    def disconnect(self):
+        """
+        Terminates programm
+        """
+        self.__proc.terminate()
+
+
+
+
+class PlayerMultiLang(Player):
+    """
+    This class run many languages programm, it can even compile it from source
+    """
+    INTERPRETED = {
+        "bash":"/bin/bash", 
+        "python":"/usr/bin/python",
+        "perl":"/usr/bin/perl", 
+        "ruby":"/usr/bin/ruby",
+
+        }
+    COMPILED = {
+        "cpp" : "/usr/bin/gcc",
+        }
+    def __init__(self, name, progname, progtype):
+        self.progargs = ""
+        self.name = name
+        if progtype in self.INTERPRETED:
+            #sys.chmod(progname, stat.S_IXUS)
+            self.progname = self.INTERPRETED[progtype]
+            self.progargs = progname
+        elif progtype in self.COMPILED:
+            self.progname = self.build(progname, progtype)
+        else:
+            raise AssertionError
+
+    def build(self, progname):
+        ##many work; temp files
+        compiled_progname=progname
+
+        return compiled_progname
+
+
+
+
+class PlayerMultiLangSSH(PlayerMultiLang):
+    """
+    This class runs many languages programm by ssh
+    """
+    SSH_EXEC_PATH="/usr/bin/ssh"
+    def __init__(self, name, progname, progtype, ssh_server, ssh_user):
+        ###super
+        self.ssh_user, self.ssh_server = ssh_user, ssh_server
+    
+    def run_programm(self, progname, progargs):
+        prog = "%s %s" % (progname, progargs)
+        sshargs = '%s@%s "%s"' % (self.ssh_user, self.ssh_server, prog)
+        return subprocess.Popen(executable=SSH_EXEC_PATH, args=sshargs, stdin=subprocess.PIPE,\
+                        stdout=subprocess.PIPE)
+
+
+if __name__=="__main__":
+    player = PlayerMultiLang(sys.argv[1],sys.argv[2],sys.argv[3])
+    player.connect()
+    player = Player(sys.argv[1],sys.argv[2])
+    player.connect()

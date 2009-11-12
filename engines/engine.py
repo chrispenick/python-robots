@@ -3,45 +3,10 @@
 Parent module for all game-engines
 """
 
-import sys,subprocess
+import sys
 
-class Player(object):
-    """
-    Class to communicate with players-programs
-    """
-    def __init__(self, name, progname):
-        """
-        name - name of player
-        progname - path to programm
-        """
-        self.name = name
-        self.progname = progname
-
-    def connect(self):
-        """
-        Starts player-programm instance
-        """
-        self.__proc = subprocess.Popen(self.progname, stdin=subprocess.PIPE,\
-                        stdout=subprocess.PIPE)
-
-    def send(self, sendstring):
-        """
-        Sends line to program
-        """
-        self.__proc.stdin.write(sendstring+'\n')
-
-    def recieve(self):
-        """
-        Reads line from programm output, stripes \\n
-        """
-        return self.__proc.stdout.readline().strip('\n')
-
-    def disconnect(self):
-        """
-        Terminates programm
-        """
-        self.__proc.terminate()
-
+sys.path.append('../')
+import engines.player as player
 
 class Engine(object):
     """
@@ -52,7 +17,7 @@ class Engine(object):
     OUTPUT_TYPES = [OUTPUT_XML, OUTPUT_SCREEN]
     OUTPUT_FILENAME_STDOUT = "-"
 
-    def __init__(self, players_prognames, opts, output, output_file=sys.stdout, player_type=Player):
+    def __init__(self, players_prognames, opts, output, output_file=sys.stdout, player_type=player.Player):
         """
         players_prognames - dict of playersname:path to programs
         opts - some custom options to engine, dict
