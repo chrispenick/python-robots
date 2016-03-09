@@ -1,0 +1,167 @@
+# Sample #
+```
+<game>
+  <date>11.10.2010 22:10</date>
+  <winner>Player1</winner>
+  <turns>345</turns>
+  <players>
+    <player>
+      <name>Player1</name>
+      <robots>
+        <robot>
+          ASE@#
+        <robot>
+        <robot>
+          WEFSW2
+        <robot>
+        <robot>
+          0sAEWa
+        <robot>
+        <robot>
+          FUEdfsA@
+        <robot>
+      </robots>
+      <time>231</time>
+    </player>
+    
+    <player>
+      <name>Player2</name>
+      <robots>
+        <robot>
+          Robo2
+        <robot>
+      </robots>
+      <time>231</time>
+    </player>
+  </players>
+
+  <log>
+   <turn>
+     <number>1</number>
+     <map>
+#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+     </map>
+     <robots>
+       <robot>
+         <name>Robo1</name>
+         <position>North</position>
+         <coord>
+           <x>4</x>
+           <y>3</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Fire Robo2</order>
+       </robot>
+       <robot>
+         <name>Robo2</name>
+         <position>South</position>
+         <coord>
+           <x>1</x>
+           <y>5</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Go</order>
+       </robot>
+     </robots>
+   </turn>
+   <turn>
+     <number>2</number>
+     <map>
+#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+     </map>
+     <robots>
+       <robot>
+         <name>Robo1</name>
+         <position>North</position>
+         <coord>
+           <x>4</x>
+           <y>3</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Fire Robo2</order>
+       </robot>
+       <robot>
+         <name>Robo2</name>
+         <position>South</position>
+         <coord>
+           <x>1</x>
+           <y>5</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Go</order>
+       </robot>
+     </robots>
+   </turn>
+   <turn>
+     <number>3</number>
+     <map>
+#.......#..........#....
+........................
+......####........##....
+.###.........#.#........
+........................
+........................
+........................
+........................
+..E....____$$$$$$$....A.
+     </map>
+     <robots>
+       <robot>
+         <name>Robo1</name>
+         <position>North</position>
+         <coord>
+           <x>4</x>
+           <y>3</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Fire Robo2</order>
+       </robot>
+       <robot>
+         <name>Robo2</name>
+         <position>South</position>
+         <coord>
+           <x>1</x>
+           <y>5</y>
+         </coord>
+         <energy>54</energy>
+         <live>77</live>
+         <ammo>88</ammo>
+         <order>Go</order>
+       </robot>
+     </robots>
+   </turn>
+
+
+
+  </log>
+</game>
+```
+
+# More samples #
+http://code.google.com/p/python-robots/source/browse/test-log-xml
